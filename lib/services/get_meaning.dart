@@ -3,10 +3,20 @@ import 'dart:convert';
 
 class APICalls {
 
-  Future<dynamic> getMeaning() async {
-    http.Response response = await http.get('https://samples.openweathermap.org/data/2.5/weather?q=London,uk&appid=439d4b804bc8187953eb36d2a8c26a02');
-    String data = jsonDecode(response.body).toString();
-    return data;
+  String url = 'https://mashape-community-urban-dictionary.p.rapidapi.com';
+  String apiKey = '5fda5d440emshb98e668d47e5e4cp191761jsnd647120abe73';
+
+  Future<dynamic> getMeaning(String searchTerm) async {
+    http.Response response = await http.get(
+      '$url/define?term=$searchTerm',
+      headers: {
+        'x-rapidapi-host': "mashape-community-urban-dictionary.p.rapidapi.com",
+        'x-rapidapi-key': '$apiKey'
+      });
+
+    String data = response.body;
+    var decodedData = jsonDecode(data);
+    return decodedData;
   }
 
 }

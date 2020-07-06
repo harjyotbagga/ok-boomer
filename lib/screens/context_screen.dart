@@ -3,7 +3,7 @@ import 'package:ok_boomer/utilities/constants.dart';
 
 class ContextScreen extends StatefulWidget {
 
-  final String searchContext;
+  final searchContext;
   ContextScreen({this.searchContext});
 
   @override
@@ -11,9 +11,25 @@ class ContextScreen extends StatefulWidget {
 }
 
 class _ContextScreenState extends State<ContextScreen> {
+
+  @override
+  void initState() {
+    var searchContext = widget.searchContext;
+    updateUI(searchContext)
+//    print(searchContext.toString());
+//    print(searchContext.runtimeType);
+    super.initState();
+  }
+
+  void updateUI(dynamic searchContext) {
+    setState(() {
+      // TODO: Initialize and update variables accrodingly
+      // TODO: Update UI Accordingly
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    var searchContext = widget.searchContext;
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -34,7 +50,8 @@ class _ContextScreenState extends State<ContextScreen> {
             ),
             Center(
               child: Text(
-                searchContext
+                'Received',
+                //searchContext
               ),
             )
           ],

@@ -42,8 +42,8 @@ class _LoadingScreenState extends State<LoadingScreen> {
     // TODO: get the meaning of the search term.
     // TODO: Test without net and see background loading
     var searchContext;
-    searchContext = await APICalls().getMeaning();
-    // var searchContext = await .....
+    searchContext = await APICalls().getMeaning(searchTerm);
+
     print(searchContext);
     await Navigator.push(context, MaterialPageRoute(
         builder: (context) {
