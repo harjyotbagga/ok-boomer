@@ -1,13 +1,14 @@
-import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ok_boomer/utilities/constants.dart';
 import 'package:ok_boomer/widgets/result_card.dart';
+import 'package:ok_boomer/widgets/error_card.dart';
 
 class ContextScreen extends StatefulWidget {
 
   final searchContext;
-  ContextScreen({this.searchContext});
+  final searchTerm;
+  ContextScreen({this.searchTerm, this.searchContext});
 
   @override
   _ContextScreenState createState() => _ContextScreenState();
@@ -17,6 +18,7 @@ class _ContextScreenState extends State<ContextScreen> {
 
   List searchResults;
   String searchTerm;
+  int resultLength;
 
   @override
   void initState() {
@@ -26,15 +28,19 @@ class _ContextScreenState extends State<ContextScreen> {
   }
 
   void updateUI(dynamic searchContext) {
-    int resultLength = searchContext['list'].length;
+    resultLength = searchContext['list'].length;
     searchResults = [];
-    searchTerm = searchContext['list'][0]['word'];
-    for (int i=0 ; i<min(resultLength,3) ; i++) {
-      var result = Map();
-      result['defi'] = searchContext['list'][i]['definition'];
-      result['example'] = searchContext['list'][i]['example'];
-      searchResults.add(result);
+    searchTerm = widget.searchTerm;
+    if (resultLength>0) {
+      searchTerm = searchContext['list'][0]['word'];
+      for (int i = 0; i < resultLength; i++) {
+        var result = Map();
+        result['defi'] = searchContext['list'][i]['definition'];
+        result['example'] = searchContext['list'][i]['example'];
+        searchResults.add(result);
+      }
     }
+
   }
 
   @override
@@ -47,38 +53,73 @@ class _ContextScreenState extends State<ContextScreen> {
               children: <Widget>[
                 Align(
                   alignment: Alignment.topLeft,
-                  child: FlatButton(
-                    onPressed: () {
+                  child: GestureDetector(
+                    onTap: () {
                       int count = 0;
                       Navigator.of(context).popUntil((context) => count++ >= 2);
                     },
                     child: Icon(
                       Icons.arrow_back_ios,
                       color: kMainBlueColor,
-                      size: 50.0,
+                      size: 42.0,
                     ),
                   ),
                 ),
-                Text(
-                  searchTerm.toLowerCase(),
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontFamily: 'PlayfairDisplay',
-                    fontWeight: FontWeight.bold,
-                    color: kMainBlueColor,
-                    fontSize: 42.0,
+                Flexible(
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 5.0),
+                    child: Text(
+                      searchTerm.toLowerCase(),
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontFamily: 'PlayfairDisplay',
+                        fontWeight: FontWeight.bold,
+                        color: kMainBlueColor,
+                        fontSize: 32.0,
+                      ),
+                    ),
                   ),
-                )
+                ),
               ],
             ),
+            getResults(),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget getResults() {
+    if (resultLength > 0) {
+      return Expanded(
+        child: SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          child: Column(
+            children: <Widget>[
+              SizedBox(
+                height: 25.0,
+              ),
+              for (int i = 0; i < searchResults.length; i++) ResultCard(
+                  searchResults: searchResults, index: i),
+            ],
+          ),
+        ),
+      );
+    }
+    else {
+      return Expanded(
+        child: Column(
+          children: <Widget>[
             SizedBox(
               height: 25.0,
             ),
-            for (int i=0; i< searchResults.length; i++) ResultCard(searchResults: searchResults, index: i),
+            ErrorCard(),
           ],
         ),
-      )
-    );
+      );
+    }
   }
+
+
 }
 

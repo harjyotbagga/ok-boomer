@@ -47,7 +47,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
     print(searchContext);
     await Navigator.push(context, MaterialPageRoute(
         builder: (context) {
-          return ContextScreen(searchContext: searchContext);
+          return ContextScreen(searchTerm: searchTerm, searchContext: searchContext);
         }));
   }
 

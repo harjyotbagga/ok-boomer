@@ -32,6 +32,8 @@ class ResultCard extends StatelessWidget {
                   "Definition: ${searchResults[index]['defi']}",
                   style: TextStyle(
                     fontFamily: 'Poppins',
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
                 SizedBox(height: 10.0,),
@@ -39,6 +41,7 @@ class ResultCard extends StatelessWidget {
                   "Example: ${searchResults[index]['example']}",
                   style: TextStyle(
                     fontFamily: 'Poppins',
+                    fontSize: 16.0
                   ),
                 ),
               ],
